@@ -1,1 +1,1 @@
-# myRepository
+#  C언어 1 VS com 숫자야구
