@@ -1,4 +1,0 @@
-﻿  1P vs com.c
-c:\users\user\desktop\project2\1p vs com.c(56): warning C4244: '함수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\user\desktop\project2\1p vs com.c(66): warning C4022: 'free': 실제 매개 변수 1의 포인터가 일치하지 않습니다.
-  Project2.vcxproj -> C:\Users\user\Desktop\Project2\x64\Debug\Project2.exe
