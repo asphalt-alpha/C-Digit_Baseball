@@ -75,10 +75,13 @@ int main() {
 			printf("Player가 공격하세요\n");
 			do
 			{
-				scanf_s("%d", &num);
+				scanf("%d", &num);
 			} while (Check_Input(num));
 		}
 
+		Check_num(num, Start_Num[!Flag], &s, &b);
+
+		//printf("\n\n%d %d", s, b);
 
 		if (player_turn == 1) player_turn = 0;
 		else player_turn = 1;
@@ -154,10 +157,10 @@ int Check_Input(int Input)
 	}
 	else if (Cnt < NUMMAX)
 	{
-		printf("%d자리 늘려 다시 입력해 주세요.", NUMMAX - Cnt);
+		printf("%d자리 늘려 다시 입력해 주세요.\n", NUMMAX - Cnt);
 		return 1;
 	}
-	else printf("%d자리 줄여 다시 입력해 주세요.", Cnt - NUMMAX); return 1;
+	else printf("%d자리 줄여 다시 입력해 주세요.\n", Cnt - NUMMAX); return 1;
 }
 
 void Input_arr(int Input, int arr[NUMMAX])
