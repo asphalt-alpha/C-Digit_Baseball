@@ -149,8 +149,11 @@ int Check_Input(int Input)
 
 void Input_arr(int Input, int arr[NUMMAX])
 {
+	for (int i = NUMMAX - 1; i >= 0; i--)
+	{
+		arr[i] = Input % 10;
 		Input = Input / 10;
-	
+	}
 }
 
 void input_candidate(int *arr, int start, int len)
