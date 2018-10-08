@@ -40,6 +40,20 @@ int main() {
 	//com의 숫자를 NUMMAX에 맞게 랜덤으로 지정
 	unsigned int NUM_com = set_com(NUM_candidate[0], len);
 	
+	//사용자의 숫자 입력
+	unsigned int NUM_player;
+	printf("당신의 시작 숫자를 입력해 주세요.\n");
+	do {
+		scanf_s("%d", &NUM_player);
+	} while (Check_Input(NUM_player));
+	system("cls");
+
+
+	//사용자의 숫자와 com의 숫자를 2차원 배열에 할당
+	int Start_Num[2][NUMMAX];
+	Input_arr(NUM_player, Start_Num[0]);
+	Input_arr(NUM_com, Start_Num[1]);
+
 	printf("%d", NUM_com);
 	
 	//end(NUM_candidate);
