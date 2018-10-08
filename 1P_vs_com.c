@@ -13,6 +13,12 @@
 
 #define NUMMAX 3
 
+struct Num_save {
+	int num;
+	int s;
+	int b;
+};
+
 void setColor(unsigned short color);  //각 사용자의 UI를 위해 컬러 지정을 해주는 함수
 int Check_Input(int Input);  //사용자가 입력한 숫자의 자리를 확인하는 함수
 void Input_arr(int Input, int arr[NUMMAX]);  //입력한 숫자를 각각의 배열방에 넣는 함수
@@ -20,6 +26,7 @@ int set_com(int *arr, int len);  //컴퓨터의 숫자 지정
 void input_candidate(int *arr, int start, int num);  //후보키를 배열에 할당
 int count_Candidate(int *save);  //처음 후보키의 개수 산출
 void end(int *arr);  	//메모리 동적할당 해제와 종료대기
+int Check_num(int input, int check[NUMMAX], int *s, int*b);  //call-by-reference 형식으로 입력값과 비교값을 넣으면 strike, ball 값 반환
 
 
 int main() {
@@ -48,13 +55,23 @@ int main() {
 	} while (Check_Input(NUM_player));
 	system("cls");
 
-
 	//사용자의 숫자와 com의 숫자를 2차원 배열에 할당
 	int Start_Num[2][NUMMAX];
 	Input_arr(NUM_player, Start_Num[0]);
 	Input_arr(NUM_com, Start_Num[1]);
 
-	printf("%d", NUM_com);
+	//게임 시작
+	int NUM_play[2][100]; //player와 com이 부른 숫자를 저장하는 배열 - 상단에 누가 어떤 숫자를 불렀는지 출력하기 위해 사용
+	int num;
+	int Flag = 0;  //게임이 종료됬는지 파악하는 변수
+	int turn = 0;
+	int player_turn = 1;  //player가 공격하는지, com이 공격하는지 구별하는 변수
+	do
+	{
+
+	} while (Flag == 0);
+
+	//printf("%d", NUM_com);
 	
 	//end(NUM_candidate);
 	system("PAUSE");
