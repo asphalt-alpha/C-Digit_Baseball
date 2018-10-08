@@ -11,7 +11,7 @@
 #define YELLOW 14
 #define WHITE 15
 
-#define NUMMAX 7
+#define NUMMAX 3
 
 void setColor(unsigned short color);  //각 사용자의 UI를 위해 컬러 지정을 해주는 함수
 int Check_Input(int Input);  //사용자가 입력한 숫자의 자리를 확인하는 함수
