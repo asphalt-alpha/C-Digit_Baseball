@@ -26,7 +26,7 @@ int set_com(int *arr, int len);  //컴퓨터의 숫자 지정
 void input_candidate(int *arr, int start, int num);  //후보키를 배열에 할당
 int count_Candidate(int *save);  //처음 후보키의 개수 산출
 void end(int *arr);  	//메모리 동적할당 해제와 종료대기
-int Check_num(int input, int check[NUMMAX], int *s, int*b);  //call-by-reference 형식으로 입력값과 비교값을 넣으면 strike, ball 값 반환
+int Check_num(int input, int check[NUMMAX], int *s_cnt, int*b_cnt);  //call-by-reference 형식으로 입력값과 비교값을 넣으면 strike, ball 값 반환
 
 
 int main() {
@@ -97,6 +97,35 @@ void end(int * arr)
 		free(arr[i]);
 	}
 	free(arr);
+}
+
+int Check_num(int input, int check[NUMMAX], int * s_cnt, int * b_cnt)
+{
+	int num[NUMMAX];
+	Input_arr(input, num);
+
+	int s = 0, b = 0;
+	for (int i = 0; i < NUMMAX; i++)
+	{
+		for (int j = 0; j < NUMMAX; j++)
+		{
+			if (num[i] == check[j])
+			{
+				if (i == j) s++;
+				else b++;
+				break;
+			}
+		}
+	}
+	*s_cnt = s;
+	*b_cnt = b;
+
+	if (s == NUMMAX)
+	{
+		return 1;
+	}
+	else
+		return 0;
 }
 
 int Check_Input(int Input)
