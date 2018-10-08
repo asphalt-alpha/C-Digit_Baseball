@@ -25,7 +25,7 @@ void Input_arr(int Input, int arr[NUMMAX]);  //입력한 숫자를 각각의 배열방에 넣�
 int set_com(int *arr, int len);  //컴퓨터의 숫자 지정
 void input_candidate(int *arr, int start, int num);  //후보키를 배열에 할당
 int count_Candidate(int *save);  //처음 후보키의 개수 산출
-void end(int *arr);  	//메모리 동적할당 해제와 종료대기
+void end(int *arr);  //메모리 동적할당 해제와 종료대기
 int Check_num(int input, int check[NUMMAX], int *s_cnt, int*b_cnt);  //call-by-reference 형식으로 입력값과 비교값을 넣으면 strike, ball 값 반환
 
 
@@ -61,14 +61,27 @@ int main() {
 	Input_arr(NUM_com, Start_Num[1]);
 
 	//게임 시작
+	struct Num_save save[2][100];
 	int NUM_play[2][100]; //player와 com이 부른 숫자를 저장하는 배열 - 상단에 누가 어떤 숫자를 불렀는지 출력하기 위해 사용
-	int num;
 	int Flag = 0;  //게임이 종료됬는지 파악하는 변수
 	int turn = 0;
 	int player_turn = 1;  //player가 공격하는지, com이 공격하는지 구별하는 변수
 	do
 	{
+		int num;
+		int s = 0, b = 0;
+		if (player_turn == 1)
+		{
+			printf("Player가 공격하세요\n");
+			do
+			{
+				scanf_s("%d", &num);
+			} while (Check_Input(num));
+		}
 
+
+		if (player_turn == 1) player_turn = 0;
+		else player_turn = 1;
 	} while (Flag == 0);
 
 	//printf("%d", NUM_com);
