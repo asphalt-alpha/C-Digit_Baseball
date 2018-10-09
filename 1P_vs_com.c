@@ -27,7 +27,8 @@ void input_candidate(int *arr, int start, int num);  //후보키를 배열에 할당
 int count_Candidate(int *save);  //처음 후보키의 개수 산출
 void end(int *arr);  //메모리 동적할당 해제와 종료대기
 int Check_num(int input, int check[NUMMAX], int *s_cnt, int*b_cnt);  //call-by-reference 형식으로 입력값과 비교값을 넣으면 strike, ball 값 반환
-
+void print_arr(struct Num_save **s, int attack, int turn);
+int checking(int arr, int input[NUMMAX], int s_cnt, int b_cnt, int turn);  //후보키와 입력키 비교
 
 int main() {
 	//처음 후보키들이 나올수 있는 경우의 수 계산  -> len, start
@@ -45,7 +46,7 @@ int main() {
 	input_candidate(NUM_candidate[0], start, len);
 
 	//com의 숫자를 NUMMAX에 맞게 랜덤으로 지정
-	unsigned int NUM_com = set_com(NUM_candidate[0], len);
+	int NUM_com = set_com(NUM_candidate[0], len);
 	
 	//사용자의 숫자 입력
 	unsigned int NUM_player;
@@ -61,30 +62,72 @@ int main() {
 	Input_arr(NUM_com, Start_Num[1]);
 
 	//게임 시작
+
 	struct Num_save save[2][100];
-	int NUM_play[2][100]; //player와 com이 부른 숫자를 저장하는 배열 - 상단에 누가 어떤 숫자를 불렀는지 출력하기 위해 사용
+	//int NUM_play[2][100]; //player와 com이 부른 숫자를 저장하는 배열 - 상단에 누가 어떤 숫자를 불렀는지 출력하기 위해 사용
 	int Flag = 0;  //게임이 종료됬는지 파악하는 변수
 	int turn = 0;
-	int player_turn = 1;  //player가 공격하는지, com이 공격하는지 구별하는 변수
+	int player_turn = 0;  //player가 공격하는지, com이 공격하는지 구별하는 변수
+	//------------------------------------------
+	int count[2] = { 0 }; //필터링을 거친 후보키들의 개수가 저장
+	count[0] = len;  //초기설정
+	int com_turn = 0;  //2차원 배열의 0행, 1행이 토글 될 수 있도록 선언
+
 	do
 	{
+		//player와 com의 공격숫자를 지정
 		int num;
 		int s = 0, b = 0;
-		if (player_turn == 1)
+		if (player_turn == 0)
 		{
+			setColor(WHITE);
 			printf("Player가 공격하세요\n");
 			do
 			{
 				scanf("%d", &num);
 			} while (Check_Input(num));
 		}
+		else {
+			num = NUM_candidate[com_turn][0];  //가장 첫번째 방을 공격숫자로 선언하는것은 일종의 전략...
+		}
+		system("cls");
 
-		Check_num(num, Start_Num[!Flag], &s, &b);
+		Flag = Check_num(num, Start_Num[!player_turn], &s, &b);
 
-		//printf("\n\n%d %d", s, b);
+		if (player_turn != 0)
+		{
+			int arr[NUMMAX];
+			Input_arr(num, arr);
+			//비교
+			count[!com_turn] = 0;
+			int j = 0;
+			for (int i = 0; i < count[com_turn]; i++)
+			{
+				if (checking(NUM_candidate[com_turn][i], arr, s, b, com_turn) == 0) {
+					NUM_candidate[!com_turn][j++] = NUM_candidate[com_turn][i];
+					count[!com_turn]++;
+				}
+			}
+		}
 
-		if (player_turn == 1) player_turn = 0;
-		else player_turn = 1;
+		//공격 내역을 구조체 배열에 저장하여 상단에 출력 할 수 있도로 함
+		save[player_turn][turn].num = num;
+		save[player_turn][turn].s = s;
+		save[player_turn][turn].b = b;
+
+		system("cls");
+
+		//printf("%d%d%d\n", Start_Num[1][0], Start_Num[1][1], Start_Num[1][2]);
+
+		//printf("%d %dS %dB\t", save[0][0].num, save[0][0].s, save[0][0].b);
+
+		print_arr(save, player_turn, turn);
+
+		//printf("\n\n\n%d %d\n", s, b);
+
+
+		player_turn = !player_turn;
+		if (player_turn == 0) turn++;
 	} while (Flag == 0);
 
 	//printf("%d", NUM_com);
@@ -100,7 +143,7 @@ void setColor(unsigned short color) {
 
 int set_com(int * arr, int len)
 {
-	srand(time(0));  //랜덤한 숫자를 만들기 위해 seed를 초기화
+	srand(time(NULL));  //랜덤한 숫자를 만들기 위해 seed를 초기화
 	int num;
 	int random = rand() % len;
 	num = arr[random];
@@ -142,6 +185,22 @@ int Check_num(int input, int check[NUMMAX], int * s_cnt, int * b_cnt)
 	}
 	else
 		return 0;
+}
+
+void print_arr(struct Num_save **s, int attack, int turn)
+{
+	for (int i = 0; i < turn + 1; i++)
+	{
+		for (int j = 0; j < 2; j++)
+		{
+			if (j == 0) setColor(BLUE);
+			else setColor(RED);
+
+			printf("%d %dS %dB\t", s[j][i].num, s[j][i].s, s[j][i].b);
+			if (attack == 0 && j == turn) break;
+		}
+		printf("\n");
+	}
 }
 
 int Check_Input(int Input)
@@ -224,4 +283,34 @@ int count_Candidate(int *save)
 		start *= 10;
 	}
 	return start;
+}
+
+int checking(int arr, int input[NUMMAX], int s_cnt, int b_cnt, int turn)
+{
+	int digit[NUMMAX];
+	int i = 0;
+	Input_arr(arr, digit);
+
+	int s = 0, b = 0;
+	for (int i = 0; i < NUMMAX; i++)
+	{
+		for (int j = 0; j < NUMMAX; j++)
+		{
+			if (input[i] == digit[j])
+			{
+				if (i == j) s++;
+				else b++;
+				break;
+			}
+		}
+	}
+
+	if (s_cnt == s && b_cnt == b)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
 }
