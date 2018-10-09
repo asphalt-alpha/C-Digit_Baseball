@@ -124,7 +124,7 @@ int main() {
 		print_arr(save, player_turn, turn);
 
 		//printf("\n\n\n%d %d\n", s, b);
-
+		//printf("\n\n\n%d %d\n", s, b);
 
 		player_turn = !player_turn;
 		if (player_turn == 0) turn++;
