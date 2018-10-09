@@ -90,9 +90,14 @@ int main() {
 		else {
 			num = NUM_candidate[com_turn][0];  //가장 첫번째 방을 공격숫자로 선언하는것은 일종의 전략...
 		}
-		system("cls");
+		//system("cls");
 
 		Flag = Check_num(num, Start_Num[!player_turn], &s, &b);
+
+		save[player_turn][turn].num = num;
+		save[player_turn][turn].s = s;
+		save[player_turn][turn].b = b;
+
 
 		if (player_turn != 0)
 		{
@@ -108,26 +113,27 @@ int main() {
 					count[!com_turn]++;
 				}
 			}
+			for (int i = 0; i < turn + 1; i++)
+			{
+				setColor(BLUE);
+				printf("%d %dS %dB\t", save[0][i].num, save[0][i].s, save[0][i].b);
+				setColor(RED);
+				printf("%d %dS %dB\t", save[1][i].num, save[1][i].s, save[1][i].b);
+				printf("\n");
+			}
+			//print_arr(save, player_turn, turn);  //좆같은거ㅅㅂ
 		}
 
 		//공격 내역을 구조체 배열에 저장하여 상단에 출력 할 수 있도로 함
-		save[player_turn][turn].num = num;
-		save[player_turn][turn].s = s;
-		save[player_turn][turn].b = b;
-
-		system("cls");
+		
+		//system("cls");
 
 		//printf("%d%d%d\n", Start_Num[1][0], Start_Num[1][1], Start_Num[1][2]);
 
-		//printf("%d %dS %dB\t", save[0][0].num, save[0][0].s, save[0][0].b);
-
-		print_arr(save, player_turn, turn);
-
 		//printf("\n\n\n%d %d\n", s, b);
 		//printf("\n\n\n%d %d\n", s, b);
-
+		if (player_turn == 1) { turn++; }
 		player_turn = !player_turn;
-		if (player_turn == 0) turn++;
 	} while (Flag == 0);
 
 	//printf("%d", NUM_com);
@@ -190,15 +196,11 @@ int Check_num(int input, int check[NUMMAX], int * s_cnt, int * b_cnt)
 void print_arr(struct Num_save **s, int attack, int turn)
 {
 	for (int i = 0; i < turn + 1; i++)
-	{
-		for (int j = 0; j < 2; j++)
-		{
-			if (j == 0) setColor(BLUE);
-			else setColor(RED);
-
-			printf("%d %dS %dB\t", s[j][i].num, s[j][i].s, s[j][i].b);
-			if (attack == 0 && j == turn) break;
-		}
+	{	
+		setColor(BLUE);
+		printf("%d %dS %dB\t", s[0][i].num, s[0][i].s, s[0][i].b);		
+		setColor(RED);
+		printf("%d %dS %dB\t", s[1][i].num, s[1][i].s, s[1][i].b);
 		printf("\n");
 	}
 }
